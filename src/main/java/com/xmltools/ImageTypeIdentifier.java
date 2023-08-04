@@ -3,7 +3,9 @@ package com.xmltools;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -51,6 +53,7 @@ public class ImageTypeIdentifier {
 						if (readers.hasNext()) {
 								ImageReader reader = readers.next();
 								String formatName = reader.getFormatName().toLowerCase();
+
 								reader.setInput(iis);
 								int numImages = reader.getNumImages(true);
 
@@ -58,10 +61,16 @@ public class ImageTypeIdentifier {
 										return "jpg";
 								} else if (formatName.equals("gif")) {
 										return "gif";
+								} else if (formatName.equals("bmp")) {
+										return "bmp";
+								} else if (formatName.equals("png")) {
+										return "png";
 								} else {
-										System.err.println("Unknown image type: " + file.getName());
+										System.err.println("Unknown image type: [" + file.getName() + "] Type name :" + formatName);
 										return null;
 								}
+						} else if (getAIImageType(file)!=null) {
+								return "ai";
 						} else {
 								System.err.println("No suitable ImageReader found for: " + file.getName());
 								return null;
@@ -71,5 +80,18 @@ public class ImageTypeIdentifier {
 						e.printStackTrace();
 						return null;
 				}
+		}
+
+
+		public static String getAIImageType(File file) {
+				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+						String firstLine = reader.readLine();
+						if (firstLine != null && firstLine.matches("%!PS-Adobe-\\d\\.\\d EPSF-\\d\\.\\d")) {
+								return "ai";
+						}
+				} catch (IOException e) {
+						System.err.println("No ai header found for file: " + file.getName());
+				}
+				return null;
 		}
 }

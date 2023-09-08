@@ -87,7 +87,7 @@ public class ImageTypeIdentifier {
 				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 						String firstLine = reader.readLine();
 						if (firstLine != null && firstLine.matches("%!PS-Adobe-\\d\\.\\d EPSF-\\d\\.\\d")) {
-								return "ai";
+								return "eps";
 						}
 				} catch (IOException e) {
 						System.err.println("No ai header found for file: " + file.getName());

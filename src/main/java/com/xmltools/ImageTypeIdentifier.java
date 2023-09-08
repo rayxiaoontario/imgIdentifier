@@ -70,7 +70,7 @@ public class ImageTypeIdentifier {
 										return null;
 								}
 						} else if (getAIImageType(file)!=null) {
-								return "ai";
+								return "eps";
 						} else {
 								System.err.println("No suitable ImageReader found for: " + file.getName());
 								return null;
@@ -90,7 +90,7 @@ public class ImageTypeIdentifier {
 								return "eps";
 						}
 				} catch (IOException e) {
-						System.err.println("No ai header found for file: " + file.getName());
+						System.err.println("No eps header found for file: " + file.getName());
 				}
 				return null;
 		}
